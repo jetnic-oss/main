@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Mains Ouvertes — Aide directe aux personnes en situation d'itinérance</title>
+<meta name="description" content="Aide directe aux personnes en situation d'itinérance à Montréal et Saint-Jérôme. Chaque don achète de la nourriture, de l'hygiène et des vêtements, remis à la main dans la rue. Don par virement Interac.">
+<meta name="theme-color" content="#055C60">
+<meta name="color-scheme" content="light dark">
+
+<!-- Partage en message privé et en story Instagram.
+     og:image doit pointer vers une VRAIE image accessible en ligne : les
+     data URI et les SVG ne sont pas acceptés par Facebook, Instagram ni iMessage.
+     Dépose un fichier og-image.png (1200x630) à côté du index.html sur Netlify,
+     puis remplace l'URL absolue ci-dessous par ton domaine réel. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_CA">
+<meta property="og:site_name" content="Mains Ouvertes">
+<meta property="og:title" content="Mains Ouvertes — Aide directe, Québec">
+<meta property="og:description" content="Chaque don achète de la nourriture, de l'hygiène et des vêtements, remis directement aux personnes dans la rue. Don par virement Interac.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo de Mains Ouvertes : deux mains ouvertes tenant un cœur.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mains Ouvertes — Aide directe, Québec">
+<meta name="twitter:description" content="Chaque don achète de la nourriture, de l'hygiène et des vêtements, remis directement aux personnes dans la rue.">
+<meta name="twitter:image" content="og-image.png">
+
+<script>document.documentElement.className+=" js";</script>
+<style>
+/* =========================================================================
+   MAINS OUVERTES — feuille de style unique
+   Palette échantillonnée dans le logo. Trois valeurs ont été corrigées
+   par rapport au brief pour atteindre le seuil WCAG AA (4,5:1) :
+     --muted        #5E7370 -> #596D6A   (était 4,49:1, maintenant 4,90:1)
+     --orange-text  nouveau  #A84E20     (l'orange #ED8B5B ne donnait que 2,21:1)
+     --orange-on-teal nouveau #F7C4A1    (l'orange sur sarcelle ne donnait que 3,12:1)
+   L'orange #ED8B5B reste inchangé pour les aplats, barres et bordures,
+   qui ne sont pas du texte.
+   ========================================================================= */
+
+:root{
+  --teal:#055C60;
+  --teal-deep:#03393C;
+  --teal-soft:#0A7378;
+  --cream:#F0E5D5;
+  --cream-warm:#F8F1E5;
+  --orange:#ED8B5B;
+  --orange-deep:#D66F3C;
+  --orange-text:#A84E20;      /* orange lisible sur crème  — 4,95:1 */
+  --orange-on-teal:#F7C4A1;   /* orange lisible sur sarcelle — 4,94:1 */
+  --ink:#12312F;
+  --muted:#596D6A;
+  --line:#E0D3BE;
+  --ok:#2E7D5B;
+
+  --surface:#FFFFFF;
+  --page:var(--cream-warm);
+  --outer:var(--teal-deep);
+
+  --r-sm:8px; --r:10px; --r-lg:12px; --r-xl:16px;
+  --shadow:0 1px 2px rgba(3,57,60,.06), 0 2px 8px rgba(3,57,60,.05);
+  --shadow-lg:0 8px 28px rgba(3,57,60,.14);
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+  --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px;
+
+  /* Pile système : aucune requête réseau, rendu natif sur chaque plateforme. */
+  --font:-apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto,
+         "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --mono:ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+         "Liberation Mono", monospace;
+
+  --dur:.42s;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --cream:#F0E5D5;
+    --cream-warm:#0C3639;
+    --page:#0C3639;
+    --outer:#041F21;
+    --surface:#123F43;
+    --ink:#F0E5D5;
+    --muted:#9DB3B0;          /* 5,93:1 sur la surface sombre */
+    --line:#1C4B4E;
+    --teal-soft:#7FD6DB;      /* 7,83:1 — les titres restent lisibles */
+    --orange-text:#ED8B5B;    /* 5,27:1 sur surface sombre */
+    --orange-on-teal:#F7C4A1;
+    --ok:#6FD3A6;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 2px 8px rgba(0,0,0,.24);
+    --shadow-lg:0 8px 28px rgba(0,0,0,.42);
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth }
+
+body{
+  margin:0;
+  font-family:var(--font);
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ink);
+  background:var(--outer);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+h1,h2,h3{ line-height:1.25; margin:0; text-wrap:balance }
+p{ margin:0 }
+
+/* Cible de survol/pression uniquement sur les appareils qui pointent. */
+a{ color:var(--orange-text); text-decoration-thickness:1px; text-underline-offset:2px }
+
+/* --- Focus visible partout : exigence d'accessibilité prioritaire --- */
+:focus-visible{
+  outline:3px solid var(--orange);
+  outline-offset:2px;
+  border-radius:4px;
+}
+.sur-sarcelle :focus-visible{ outline-color:var(--cream) }
+
+/* Lien d'évitement pour la navigation au clavier */
+.saut{
+  position:absolute; left:var(--sp-3); top:-100px; z-index:99;
+  background:var(--cream); color:var(--teal-deep);
+  padding:10px 16px; border-radius:var(--r); font-weight:700;
+  transition:top .18s var(--ease);
+}
+.saut:focus{ top:var(--sp-3) }
+
+.sr{
+  position:absolute!important; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+
+/* ---------------------------------------------------------------- Coquille */
+.page{
+  max-width:620px;
+  margin:0 auto;
+  background:var(--page);
+  box-shadow:0 0 60px rgba(0,0,0,.22);
+  overflow:hidden;
+}
+
+/* ----------------------------------------------------------------- En-tête */
+.entete{
+  background:var(--teal);
+  color:var(--cream);
+  text-align:center;
+  padding:var(--sp-7) var(--sp-5) 0;
+  position:relative;
+}
+
+/* Courbe concave : un bloc crème aux coins supérieurs très arrondis
+   remonte dans la sarcelle et adoucit le raccord entre les deux blocs. */
+.entete::after{
+  content:"";
+  display:block;
+  height:44px;
+  margin-top:var(--sp-6);
+  margin-left:calc(var(--sp-5) * -1);
+  margin-right:calc(var(--sp-5) * -1);
+  background:var(--page);
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.logo-lien{ display:block; width:max-content; margin:0 auto; border-radius:50%; line-height:0 }
+.logo{
+  width:142px; height:142px; display:block;
+  filter:drop-shadow(0 10px 22px rgba(3,57,60,.42));
+}
+
+.etiquette{
+  display:block;
+  margin-top:var(--sp-5);
+  color:var(--orange-on-teal);
+  font-size:11px; font-weight:800;
+  letter-spacing:.19em; text-transform:uppercase;
+}
+
+.entete-intro{
+  margin:var(--sp-3) auto 0;
+  max-width:44ch;
+  color:var(--cream);
+  font-size:16.5px;
+  line-height:1.62;
+  opacity:.96;
+}
+
+/* ---------------------------------------------------------------- Sections */
+main{ display:block }
+
+.section{
+  padding:var(--sp-6) var(--sp-5);
+  border-top:1px solid var(--line);
+}
+.section:first-of-type{ border-top:0; padding-top:var(--sp-5) }
+
+.section-titre{
+  font-size:13px; font-weight:800;
+  letter-spacing:.12em; text-transform:uppercase;
+  color:var(--teal-soft);
+  margin-bottom:var(--sp-4);
+}
+.section-sous{
+  color:var(--muted); font-size:14.5px;
+  margin-top:calc(var(--sp-4) * -1 + 2px); margin-bottom:var(--sp-4);
+}
+
+/* ------------------------------------------------- Blocs de copie (Interac) */
+.champs{ display:flex; flex-direction:column; gap:var(--sp-3) }
+
+.champ{
+  display:flex; align-items:center; gap:var(--sp-3);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  box-shadow:var(--shadow);
+}
+.champ-corps{ min-width:0; flex:1 }
+.champ-etiq{
+  display:block;
+  font-size:10.5px; font-weight:800;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:3px;
+}
+.champ-val{
+  font-family:var(--mono);
+  font-size:15px; font-weight:600;
+  color:var(--ink);
+  /* break-word (et non anywhere) : la coupure se fait au <wbr> après le @,
+     pas au milieu d'un mot. */
+  overflow-wrap:break-word;
+  line-height:1.4;
+}
+
+/* --------------------------------------------------------------- Boutons */
+.btn{
+  font:inherit; font-weight:700;
+  border:0; border-radius:var(--r);
+  cursor:pointer;
+  transition:background-color .18s var(--ease), color .18s var(--ease),
+             transform .12s var(--ease), border-color .18s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.btn:active{ transform:scale(.97) }
+
+.btn-copier{
+  flex:0 0 auto;
+  background:var(--teal); color:#fff;
+  padding:11px 15px;
+  font-size:13.5px;
+  min-height:44px;          /* cible tactile minimale */
+  min-width:76px;
+}
+.btn-copier:hover{ background:var(--teal-soft) }
+.btn-copier.fait{ background:var(--ok) }
+
+.btn-tout{
+  width:100%;
+  margin-top:var(--sp-4);
+  background:var(--orange);
+  color:var(--ink);          /* encre sur orange = 5,61:1 ; le blanc échouerait */
+  padding:16px;
+  font-size:16px; font-weight:800;
+  min-height:52px;
+  box-shadow:var(--shadow);
+}
+.btn-tout:hover{ background:var(--orange-deep) }
+.btn-tout.fait{ background:var(--ok); color:#fff }
+
+/* ------------------------------------------------------- Montants suggérés */
+.montants{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:var(--sp-2);
+}
+.montant{
+  background:var(--surface);
+  border:2px solid var(--line);
+  color:var(--ink);
+  padding:14px 6px;
+  font-size:16px; font-weight:800;
+  min-height:52px;
+  border-radius:var(--r);
+}
+.montant:hover{ border-color:var(--teal-soft) }
+.montant[aria-pressed="true"]{
+  background:var(--teal); border-color:var(--teal); color:#fff;
+}
+
+.note-montant{
+  text-align:center;
+  color:var(--muted);
+  font-size:14.5px;
+  margin-top:var(--sp-4);
+  min-height:1.6em;
+}
+.note-montant strong{ color:var(--teal-soft) }
+
+/* ---------------------------------------------------- Calculateur d'impact */
+.amorce{
+  margin-top:var(--sp-5);
+  border:2px dashed var(--orange);
+  border-radius:var(--r-lg);
+  background:rgba(237,139,91,.09);
+  padding:var(--sp-4);
+  font-size:14.5px;
+  line-height:1.55;
+  color:var(--ink);
+}
+.amorce strong{ color:var(--orange-text) }
+
+.saisie-enveloppe{ position:relative; margin-top:var(--sp-4) }
+.saisie-etiq{
+  display:block;
+  font-size:12px; font-weight:700;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.saisie{
+  width:100%;
+  font-family:var(--mono);
+  font-size:19px; font-weight:700;
+  color:var(--ink);
+  background:var(--surface);
+  border:2px solid var(--line);
+  border-radius:var(--r);
+  padding:15px 46px 15px 16px;
+  min-height:56px;           /* confortable au doigt */
+  transition:border-color .18s var(--ease);
+}
+.saisie:hover{ border-color:var(--teal-soft) }
+.saisie:focus{ border-color:var(--teal); outline-offset:1px }
+.saisie::placeholder{ color:var(--muted); font-weight:400; opacity:.75 }
+.saisie[aria-invalid="true"]{ border-color:var(--orange-deep) }
+
+.devise{
+  position:absolute; right:16px;
+  top:50%; transform:translateY(calc(-50% + 11px));
+  font-family:var(--mono); font-size:19px; font-weight:700;
+  color:var(--muted);
+  pointer-events:none;
+}
+
+.erreur-saisie{
+  display:none;
+  margin-top:var(--sp-2);
+  color:var(--orange-text);
+  font-size:13.5px; font-weight:600;
+}
+.erreur-saisie.visible{ display:block }
+
+/* Résultats */
+.resultats{ display:none; margin-top:var(--sp-5) }
+.resultats.visible{ display:block }
+
+.resultats-titre{
+  font-size:15px; font-weight:800;
+  color:var(--ink);
+  margin-bottom:var(--sp-3);
+}
+.resultats-titre span{ color:var(--teal-soft) }
+
+.lignes{ display:flex; flex-direction:column; gap:var(--sp-2) }
+
+.ligne{
+  display:flex; align-items:center; gap:var(--sp-3);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:11px var(--sp-3);
+  opacity:0;
+  transform:translateY(7px);
+  animation:apparait .34s var(--ease) forwards;
+}
+.ligne.insuffisant{ opacity:.62 }
+.ligne.insuffisant .ligne-nb{ color:var(--muted) }
+
+@keyframes apparait{ to{ opacity:1; transform:none } }
+.ligne.insuffisant{ animation-name:apparait-faible }
+@keyframes apparait-faible{ to{ opacity:.62; transform:none } }
+
+.ligne-emoji{ font-size:20px; line-height:1; flex:0 0 auto }
+.ligne-nb{
+  font-size:19px; font-weight:800;
+  color:var(--teal-soft);
+  font-variant-numeric:tabular-nums;
+  flex:0 0 auto; min-width:2.2ch;
+}
+.ligne-txt{ font-size:14.5px; color:var(--ink); line-height:1.4 }
+.ligne-txt small{ color:var(--muted); font-size:13px }
+
+/* Cette note empêche de croire que le montant couvre les cinq lignes en même
+   temps. Elle ne doit jamais être retirée. */
+.note-categorie{
+  margin-top:var(--sp-3);
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  font-style:italic;
+}
+
+/* -------------------------------------------------------- Comment envoyer */
+.etapes{
+  list-style:none;
+  counter-reset:etape;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; gap:var(--sp-3);
+}
+.etapes li{
+  counter-increment:etape;
+  display:flex; align-items:flex-start; gap:var(--sp-3);
+  font-size:15px; line-height:1.5;
+}
+.etapes li > span{ min-width:0 }
+.etapes li::before{
+  content:counter(etape);
+  flex:0 0 auto;
+  width:27px; height:27px;
+  border-radius:50%;
+  background:var(--orange);
+  color:var(--ink);           /* encre sur orange : lisible */
+  font-size:13.5px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:1px;
+}
+.etapes strong{
+  display:block;
+  margin-top:3px;
+  font-family:var(--mono);
+  font-size:14.5px;
+  color:var(--teal-soft);
+  overflow-wrap:break-word;
+}
+
+/* ---------------------------------------------------------- Où va l'argent */
+.repartition{ display:flex; flex-direction:column; gap:var(--sp-4) }
+.poste{ display:grid; grid-template-columns:1fr; gap:6px }
+.poste-tete{
+  display:flex; justify-content:space-between; align-items:baseline;
+  gap:var(--sp-3);
+  font-size:14.5px;
+}
+.poste-nom{ font-weight:600; color:var(--ink) }
+.poste-pct{
+  font-weight:800; color:var(--teal-soft);
+  font-variant-numeric:tabular-nums;
+}
+.piste{
+  height:9px;
+  background:var(--line);
+  border-radius:99px;
+  overflow:hidden;
+}
+.barre{
+  height:100%;
+  width:0;
+  border-radius:99px;
+  background:var(--teal);
+  transition:width 1.05s var(--ease);
+}
+.poste:nth-child(even) .barre{ background:var(--orange) }
+.poste:nth-child(even) .poste-pct{ color:var(--orange-text) }
+
+.encadre{
+  margin-top:var(--sp-5);
+  background:rgba(237,139,91,.11);
+  border:1px solid var(--orange);
+  border-left-width:4px;
+  border-radius:var(--r);
+  padding:var(--sp-4);
+  font-size:14.5px; line-height:1.55;
+  color:var(--ink);
+}
+
+/* ------------------------------------------------------------ Bilan du mois */
+.bilan{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:var(--sp-2);
+}
+.bilan-carte{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:var(--sp-4) var(--sp-2);
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+.bilan-nb{
+  display:block;
+  font-size:22px; font-weight:800;
+  color:var(--teal-soft);
+  font-variant-numeric:tabular-nums;
+  line-height:1.2;
+}
+.bilan-lib{
+  display:block;
+  margin-top:4px;
+  font-size:11.5px; font-weight:700;
+  letter-spacing:.05em; text-transform:uppercase;
+  color:var(--muted);
+  line-height:1.35;
+}
+
+/* -------------------------------------------------------------- Ressources */
+.ressources{ display:flex; flex-direction:column; gap:var(--sp-3) }
+
+.ligne-211{
+  display:flex; align-items:center; gap:var(--sp-4);
+  background:var(--teal);
+  border-radius:var(--r-lg);
+  padding:var(--sp-4);
+  color:var(--cream);
+  text-decoration:none;
+  box-shadow:var(--shadow);
+  transition:background-color .18s var(--ease);
+}
+.ligne-211:hover{ background:var(--teal-soft) }
+.ligne-211-nb{
+  flex:0 0 auto;
+  font-size:27px; font-weight:800;
+  font-variant-numeric:tabular-nums;
+  color:var(--cream);
+  line-height:1;
+}
+.ligne-211-txt{ font-size:14px; line-height:1.45 }
+.ligne-211-txt strong{ display:block; font-size:15.5px; margin-bottom:2px }
+
+.ressource{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:var(--sp-3) var(--sp-4);
+  font-size:14.5px;
+  line-height:1.5;
+}
+.ressource-ville{
+  display:block;
+  font-size:10.5px; font-weight:800;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+.ressource a{ font-weight:600 }
+
+/* -------------------------------------------------------------------- FAQ */
+.faq{ display:flex; flex-direction:column; gap:var(--sp-2) }
+
+.faq-item{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+}
+
+/* Vrai <button> : utilisable au clavier, annoncé correctement, avec
+   aria-expanded. Remplace les <div onclick> de la version précédente. */
+.faq-q{
+  width:100%;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:var(--sp-3);
+  background:none; border:0;
+  padding:var(--sp-4);
+  text-align:left;
+  font:inherit; font-size:15px; font-weight:700;
+  color:var(--ink);
+  cursor:pointer; min-height:52px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.faq-q:hover{ color:var(--teal-soft) }
+.faq-q:focus-visible{ outline-offset:-3px }
+
+.faq-signe{
+  flex:0 0 auto;
+  width:26px; height:26px;
+  position:relative;
+  border-radius:50%;
+  background:rgba(237,139,91,.16);
+  transition:transform .28s var(--ease), background-color .18s var(--ease);
+}
+.faq-signe::before,
+.faq-signe::after{
+  content:"";
+  position:absolute; left:50%; top:50%;
+  background:var(--orange-text);
+  border-radius:2px;
+  transform:translate(-50%,-50%);
+}
+.faq-signe::before{ width:12px; height:2.5px }
+.faq-signe::after{ width:2.5px; height:12px; transition:opacity .2s var(--ease), transform .28s var(--ease) }
+
+.faq-q[aria-expanded="true"] .faq-signe{ transform:rotate(180deg) }
+.faq-q[aria-expanded="true"] .faq-signe::after{ opacity:0; transform:translate(-50%,-50%) scaleY(0) }
+
+.faq-r{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .3s var(--ease);
+}
+.faq-r > div{ overflow:hidden }
+.faq-item.ouvert .faq-r{ grid-template-rows:1fr }
+.faq-r p{
+  padding:0 var(--sp-4) var(--sp-4);
+  font-size:14.5px; line-height:1.6;
+  color:var(--muted);
+}
+.faq-r strong{ color:var(--ink) }
+
+/* --------------------------------------------------------------- Partage */
+.partage{
+  display:flex; align-items:center; justify-content:center; gap:var(--sp-2);
+  width:100%;
+  background:none;
+  border:2px solid var(--line);
+  color:var(--ink);
+  padding:14px;
+  min-height:50px;
+  font-size:15px; font-weight:700;
+  border-radius:var(--r);
+}
+.partage:hover{ border-color:var(--teal-soft); color:var(--teal-soft) }
+.partage.fait{ border-color:var(--ok); color:var(--ok) }
+
+/* ------------------------------------------------------------ Pied de page */
+.pied{
+  background:var(--teal);
+  color:var(--cream);
+  text-align:center;
+  padding:var(--sp-7) var(--sp-5);
+}
+.pied .logo{ width:54px; height:54px; margin:0 auto; filter:none }
+.pied-nom{
+  margin-top:var(--sp-3);
+  font-size:17px; font-weight:800;
+  letter-spacing:.01em;
+}
+.pied-desc{
+  margin-top:5px;
+  font-size:13.5px;
+  color:var(--cream);
+  opacity:.9;
+  line-height:1.5;
+}
+.pied-liens{
+  margin-top:var(--sp-4);
+  display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:center;
+  gap:var(--sp-2) var(--sp-4);
+}
+.pied-liens a{
+  color:var(--orange-on-teal);   /* 4,94:1 sur sarcelle */
+  font-size:14.5px; font-weight:700;
+  text-decoration:none;
+  padding:11px 6px;              /* 44px de haut : cible tactile conforme */
+  overflow-wrap:anywhere;
+}
+.pied-liens a:hover{ text-decoration:underline }
+.pied-fin{
+  margin-top:var(--sp-5);
+  font-size:12px;
+  color:var(--cream);
+  opacity:.62;
+}
+
+/* ------------------------------------------------------------------ Toast */
+.toast{
+  position:fixed;
+  left:50%; bottom:max(20px, env(safe-area-inset-bottom, 0px));
+  transform:translate(-50%, 150%);
+  background:var(--ok); color:#fff;
+  padding:13px 22px;
+  border-radius:99px;
+  font-size:14.5px; font-weight:700;
+  box-shadow:var(--shadow-lg);
+  z-index:60;
+  opacity:0;
+  visibility:hidden;
+  transition:transform .32s var(--ease), opacity .28s var(--ease),
+             visibility 0s linear .32s;
+  max-width:calc(100vw - 32px);
+  text-align:center;
+  pointer-events:none;
+}
+.toast.visible{
+  transform:translate(-50%, 0);
+  opacity:1;
+  visibility:visible;
+  transition:transform .32s var(--ease), opacity .2s var(--ease),
+             visibility 0s linear 0s;
+}
+
+/* ------------------------------------------------- Révélation au défilement */
+.reveler{
+  opacity:1;                 /* état sûr par défaut : visible */
+  transform:none;
+}
+/* La classe « js » est posée en tête de document : seul un navigateur qui
+   exécute vraiment le script cache le contenu avant de l'animer. */
+.js .reveler{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity .55s var(--ease), transform .55s var(--ease);
+  will-change:opacity, transform;
+}
+.reveler.vu{ opacity:1; transform:none; will-change:auto }
+
+/* ------------------------------------------------------------- Responsive */
+@media (max-width:520px){
+  .section{ padding:var(--sp-5) var(--sp-4) }
+  /* À 375px, le courriel se coupait en plein milieu (« gmail.co / m »).
+     On resserre la chasse fixe et le bouton pour qu'il tienne d'un bloc. */
+  .champ-val{ font-size:13.5px }
+  .etapes strong{ font-size:13.5px }
+  .btn-copier{ min-width:66px; padding:11px 12px }
+  .entete{ padding:var(--sp-6) var(--sp-4) 0 }
+  .entete::after{ margin-left:calc(var(--sp-4) * -1); margin-right:calc(var(--sp-4) * -1) }
+  .logo{ width:118px; height:118px }
+  .montants{ grid-template-columns:repeat(2,1fr) }
+  .bilan{ grid-template-columns:1fr }
+  .bilan-carte{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--sp-3); text-align:left; padding:var(--sp-3) var(--sp-4) }
+  .bilan-lib{ margin-top:0 }
+  .pied{ padding:var(--sp-6) var(--sp-4) }
+}
+
+@media (min-width:640px){
+  .page{ margin:var(--sp-6) auto; border-radius:var(--r-xl) }
+}
+
+/* ------------------------------------------- Préférence de mouvement réduit */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+    scroll-behavior:auto!important;
+  }
+  .reveler{ opacity:1; transform:none }
+  .ligne{ opacity:1; transform:none }
+  .ligne.insuffisant{ opacity:.62 }
+}
+
+/* ------------------------------------------------------------- Impression */
+@media print{
+  body{ background:#fff; color:#000 }
+  .page{ max-width:none; box-shadow:none; margin:0 }
+  .entete,.pied{ background:#fff; color:#000 }
+  .entete::after{ display:none }
+  .etiquette,.pied-liens a{ color:#000 }
+  .btn,.btn-tout,.partage,.saut,.toast,.amorce{ display:none!important }
+  .section{ break-inside:avoid; border-top:1px solid #ccc }
+  .faq-r{ grid-template-rows:1fr!important }
+  .faq-signe{ display:none }
+  .barre{ transition:none }
+  .reveler{ opacity:1!important; transform:none!important }
+  a[href^="http"]::after{ content:" (" attr(href) ")"; font-size:11px; color:#555 }
+}
+</style>
+</head>
+<body>
+
+<a class="saut" href="#contenu">Aller au contenu principal</a>
+
+<!-- =======================================================================
+     LOGO — reconstitution vectorielle
+     Le logo d'origine était une image PNG encodée en base64 (~370 Ko).
+     Ce fichier n'était pas disponible ici, alors le logo a été redessiné en
+     SVG d'après sa description : cercle sarcelle, deux mains crème ouvertes
+     en coupe, cœur orange, texte « mains ouvertes » en dessous.
+     Avantages : ~4 Ko au lieu de 370 Ko, net sur tous les écrans, et il
+     s'adapte au thème. Pour remettre le PNG d'origine, remplace les deux
+     balises <svg class="logo"> par :
+        <img class="logo" src="data:image/png;base64,XXXX" alt="Mains Ouvertes">
+     ======================================================================= -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="logo-mo" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="100" fill="#055C60"/>
+    <!-- Anneau crème : sans lui, le cercle sarcelle disparaît sur l'en-tête sarcelle. -->
+    <circle cx="100" cy="100" r="93.5" fill="none" stroke="#F0E5D5" stroke-width="2.5" opacity=".38"/>
+
+    <!-- Cœur dessiné en premier : les mains le recouvrent, il repose dans le creux. -->
+    <path fill="#ED8B5B" transform="translate(0,10)" d="M100 99
+      C100 99 79 85 79 72 C79 64 85 59 91.5 59
+      C96 59 99 61.5 100 64.5 C101 61.5 104 59 108.5 59
+      C115 59 121 64 121 72 C121 85 100 99 100 99 Z"/>
+
+    <!-- Main gauche : pouce à l'extérieur, quatre doigts en arcs, paume en coupe.
+         Les deux moitiés se rejoignent sur l'axe : toute fente centrale se lisait
+         comme une tige de fleur, ce qui détruisait le sens du symbole. -->
+    <path id="mo-main" fill="#F0E5D5" d="M43 108
+      C40 99 45 90 52 92.5 C56.5 94 58.5 99 58.5 104.5
+      A7 7 0 0 1 72.5 106
+      A6.5 6.5 0 0 1 85.5 109
+      A6 6 0 0 1 97 113
+      L100 116 L100 150
+      C80 148 62 139 51 127 C45 120 43.5 113 43 108 Z"/>
+    <use href="#mo-main" transform="translate(200,0) scale(-1,1)"/>
+
+    <text x="100" y="171" text-anchor="middle" fill="#F0E5D5"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+          font-size="17" font-weight="600" letter-spacing="0.4">mains ouvertes</text>
+  </symbol>
+</svg>
+
+<div class="page">
+
+  <!-- ================================================================ En-tête -->
+  <header class="entete sur-sarcelle">
+    <a class="logo-lien" href="https://instagram.com/mains_ouvertes"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Mains Ouvertes sur Instagram (nouvel onglet)">
+      <svg class="logo" aria-hidden="true" focusable="false"><use href="#logo-mo"/></svg>
+    </a>
+    <span class="etiquette">Aide directe · Québec</span>
+    <h1 class="sr">Mains Ouvertes — aide directe aux personnes en situation d'itinérance</h1>
+    <p class="entete-intro">
+      Chaque don sert à acheter de la nourriture, de l'hygiène et des vêtements,
+      remis directement aux personnes dans la rue.
+    </p>
+  </header>
+
+  <main id="contenu">
+
+    <!-- =========================================== Don par virement Interac -->
+    <section class="section" aria-labelledby="t-interac">
+      <h2 class="section-titre" id="t-interac">Don par virement Interac</h2>
+
+      <div class="champs">
+        <div class="champ">
+          <div class="champ-corps">
+            <span class="champ-etiq" id="e-courriel">Courriel du destinataire</span>
+            <span class="champ-val" id="v-courriel">mains.ouvertes.qc@<wbr>gmail.com</span>
+          </div>
+          <button type="button" class="btn btn-copier"
+                  data-copier="#v-courriel"
+                  aria-label="Copier le courriel du destinataire">Copier</button>
+        </div>
+
+        <div class="champ">
+          <div class="champ-corps">
+            <span class="champ-etiq">Réponse à la question secrète</span>
+            <span class="champ-val" id="v-reponse">MOQdonation</span>
+          </div>
+          <button type="button" class="btn btn-copier"
+                  data-copier="#v-reponse"
+                  aria-label="Copier la réponse à la question secrète">Copier</button>
+        </div>
+
+        <div class="champ">
+          <div class="champ-corps">
+            <span class="champ-etiq">Message à inscrire</span>
+            <span class="champ-val" id="v-message">Don Mains Ouvertes</span>
+          </div>
+          <button type="button" class="btn btn-copier"
+                  data-copier="#v-message"
+                  aria-label="Copier le message à inscrire">Copier</button>
+        </div>
+
+        <div class="champ">
+          <div class="champ-corps">
+            <span class="champ-etiq">Instagram</span>
+            <span class="champ-val" id="v-instagram">@mains_ouvertes</span>
+          </div>
+          <button type="button" class="btn btn-copier"
+                  data-copier="#v-instagram"
+                  aria-label="Copier le nom d'utilisateur Instagram">Copier</button>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-tout" id="btn-tout">
+        Copier toutes les infos d'un coup
+      </button>
+    </section>
+
+    <!-- ====================================================== Montant suggéré -->
+    <section class="section" aria-labelledby="t-montant">
+      <h2 class="section-titre" id="t-montant">Montant suggéré</h2>
+
+      <div class="montants" role="group" aria-labelledby="t-montant">
+        <button type="button" class="btn montant" data-montant="10" aria-pressed="false">10 $</button>
+        <button type="button" class="btn montant" data-montant="25" aria-pressed="false">25 $</button>
+        <button type="button" class="btn montant" data-montant="50" aria-pressed="false">50 $</button>
+        <button type="button" class="btn montant" data-montant="100" aria-pressed="false">100 $</button>
+      </div>
+
+      <p class="note-montant" id="note-montant" aria-live="polite">
+        Même 5 $ paie deux repas chauds. Tous les montants comptent.
+      </p>
+
+      <div class="amorce">
+        💡 <strong>La plupart des gens sous-estiment l'impact d'un petit montant.</strong>
+        Tape le tien et vois par toi-même — le résultat surprend presque tout le monde.
+      </div>
+
+      <div class="saisie-enveloppe">
+        <label class="saisie-etiq" for="champ-montant">Ou entre ton propre montant</label>
+        <input class="saisie" id="champ-montant" type="text"
+               inputmode="decimal" autocomplete="off"
+               placeholder="25"
+               aria-describedby="erreur-montant note-categorie">
+        <span class="devise" aria-hidden="true">$</span>
+        <p class="erreur-saisie" id="erreur-montant" role="alert"></p>
+      </div>
+
+      <p class="sr" id="annonce" aria-live="polite"></p>
+      <div class="resultats" id="resultats">
+        <p class="resultats-titre" id="resultats-titre"></p>
+        <div class="lignes" id="lignes"></div>
+        <p class="note-categorie" id="note-categorie">
+          Chaque ligne montre ce que ce montant couvre dans une seule catégorie à la fois.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= Comment envoyer -->
+    <section class="section reveler" aria-labelledby="t-envoyer">
+      <h2 class="section-titre" id="t-envoyer">Comment envoyer</h2>
+      <ol class="etapes">
+        <li><span>Ouvre ton application bancaire (Desjardins, RBC, TD, BMO, Scotia, CIBC…)</span></li>
+        <li><span>Choisis « Virement Interac » puis « Envoyer de l'argent »</span></li>
+        <li><span>Colle le courriel : <strong>mains.ouvertes.qc@<wbr>gmail.com</strong></span></li>
+        <li><span>Inscris le montant de ton choix</span></li>
+        <li><span>Réponse à la question secrète : <strong>MOQdonation</strong></span></li>
+        <li><span>Envoie — une confirmation par courriel suit dans l'heure</span></li>
+      </ol>
+    </section>
+
+    <!-- ======================================================= Où va l'argent -->
+    <section class="section reveler" aria-labelledby="t-argent">
+      <h2 class="section-titre" id="t-argent">Où va l'argent</h2>
+
+      <div class="repartition" id="repartition">
+        <div class="poste">
+          <div class="poste-tete"><span class="poste-nom">Nourriture</span><span class="poste-pct">50 %</span></div>
+          <div class="piste"><div class="barre" data-pct="50"></div></div>
+        </div>
+        <div class="poste">
+          <div class="poste-tete"><span class="poste-nom">Hygiène et vêtements</span><span class="poste-pct">30 %</span></div>
+          <div class="piste"><div class="barre" data-pct="30"></div></div>
+        </div>
+        <div class="poste">
+          <div class="poste-tete"><span class="poste-nom">Sacs et transport</span><span class="poste-pct">15 %</span></div>
+          <div class="piste"><div class="barre" data-pct="15"></div></div>
+        </div>
+        <div class="poste">
+          <div class="poste-tete"><span class="poste-nom">Urgences</span><span class="poste-pct">5 %</span></div>
+          <div class="piste"><div class="barre" data-pct="5"></div></div>
+        </div>
+      </div>
+
+      <div class="encadre">
+        Un bilan avec les reçus est publié chaque mois dans les stories Instagram :
+        montant reçu, montant dépensé, nombre de personnes rejointes.
+      </div>
+    </section>
+
+    <!-- ========================================================= Bilan du mois -->
+    <section class="section reveler" aria-labelledby="t-bilan">
+      <h2 class="section-titre" id="t-bilan">Dernier bilan mensuel</h2>
+      <p class="section-sous" id="bilan-mois"></p>
+      <div class="bilan">
+        <div class="bilan-carte">
+          <span class="bilan-nb" id="bilan-recu">—</span>
+          <span class="bilan-lib">Reçu</span>
+        </div>
+        <div class="bilan-carte">
+          <span class="bilan-nb" id="bilan-depense">—</span>
+          <span class="bilan-lib">Dépensé</span>
+        </div>
+        <div class="bilan-carte">
+          <span class="bilan-nb" id="bilan-personnes">—</span>
+          <span class="bilan-lib">Personnes rejointes</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Ressources -->
+    <!-- Une partie du trafic vient de gens qui CHERCHENT de l'aide.
+         Vérifie les liens une fois par année, les organismes changent de site. -->
+    <section class="section reveler" aria-labelledby="t-ressources">
+      <h2 class="section-titre" id="t-ressources">Besoin d'aide ?</h2>
+      <p class="section-sous">
+        Si tu es toi-même en difficulté, ces ressources sont gratuites et confidentielles.
+      </p>
+
+      <div class="ressources">
+        <a class="ligne-211 sur-sarcelle" href="tel:211">
+          <span class="ligne-211-nb" aria-hidden="true">211</span>
+          <span class="ligne-211-txt">
+            <strong>Compose le 211</strong>
+            Ligne gratuite et confidentielle, 7 jours sur 7. Elle oriente vers
+            l'hébergement, l'aide alimentaire et les services sociaux partout au Québec.
+          </span>
+        </a>
+
+        <p class="ressource">
+          <span class="ressource-ville">Détresse psychologique</span>
+          <strong>Info-Social : 811, option 2</strong> — intervenant psychosocial,
+          24 heures sur 24, partout au Québec.
+        </p>
+
+        <p class="ressource">
+          <span class="ressource-ville">Montréal</span>
+          <a href="https://missionoldbrewery.ca" target="_blank" rel="noopener noreferrer">Mission Old Brewery</a>,
+          <a href="https://accueilbonneau.com" target="_blank" rel="noopener noreferrer">Accueil Bonneau</a>,
+          <a href="https://missionbonaccueil.com" target="_blank" rel="noopener noreferrer">Mission Bon Accueil</a>
+          — hébergement et repas.
+          <a href="https://moissonmontreal.org" target="_blank" rel="noopener noreferrer">Moisson Montréal</a>
+          pour l'aide alimentaire.
+        </p>
+
+        <p class="ressource">
+          <span class="ressource-ville">Saint-Jérôme et Laurentides</span>
+          <a href="https://moissonlaurentides.org" target="_blank" rel="noopener noreferrer">Moisson Laurentides</a>
+          distribue aux banques alimentaires de la région. Le 211 donne la liste
+          des hébergements ouverts le soir même.
+        </p>
+      </div>
+    </section>
+
+    <!-- =================================================== Questions fréquentes -->
+    <section class="section reveler" aria-labelledby="t-faq">
+      <h2 class="section-titre" id="t-faq">Questions fréquentes</h2>
+      <div class="faq" id="faq">
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false" aria-controls="r1" id="q1">
+              <span>Est-ce que je reçois un reçu d'impôt ?</span>
+              <span class="faq-signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-r" id="r1" role="region" aria-labelledby="q1"><div>
+            <p>Non. Mains Ouvertes <strong>n'est pas un organisme de bienfaisance
+            enregistré</strong>, donc aucun reçu fiscal n'est émis. Si tu veux un reçu,
+            passe par la Mission Old Brewery, Accueil Bonneau ou la Mission Bon Accueil.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false" aria-controls="r2" id="q2">
+              <span>Qui gère les dons ?</span>
+              <span class="faq-signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-r" id="r2" role="region" aria-labelledby="q2"><div>
+            <p>Le compte est géré par une seule personne, avec un suivi de chaque dollar
+            dans un tableur. Les achats se font en gros et les reçus sont photographiés
+            puis publiés.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false" aria-controls="r3" id="q3">
+              <span>Qu'est-ce qui est distribué exactement ?</span>
+              <span class="faq-signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-r" id="r3" role="region" aria-labelledby="q3"><div>
+            <p>Repas et collations, eau, bas et tuques, produits d'hygiène (savon,
+            brosses à dents, serviettes hygiéniques), et du matériel chaud l'hiver.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false" aria-controls="r4" id="q4">
+              <span>Je peux aider autrement qu'en argent ?</span>
+              <span class="faq-signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-r" id="r4" role="region" aria-labelledby="q4"><div>
+            <p>Oui. Bas neufs, manteaux propres, produits d'hygiène non ouverts.
+            Écris en message privé sur
+            <a href="https://instagram.com/mains_ouvertes" target="_blank" rel="noopener noreferrer">Instagram</a>
+            pour organiser une remise.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false" aria-controls="r5" id="q5">
+              <span>Est-ce que les personnes aidées sont filmées ?</span>
+              <span class="faq-signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-r" id="r5" role="region" aria-labelledby="q5"><div>
+            <p>Jamais sans consentement clair, et jamais dans une position humiliante.
+            Beaucoup de publications montrent seulement le matériel ou des mains.
+            <strong>La dignité passe avant le contenu.</strong></p>
+          </div></div>
+        </div>
+
+      </div>
+
+      <p style="margin-top:var(--sp-5)">
+        <button type="button" class="btn partage" id="btn-partage">
+          <span aria-hidden="true">↗</span> Partager la page
+        </button>
+      </p>
+    </section>
+
+  </main>
+
+  <!-- ============================================================ Pied de page -->
+  <footer class="pied sur-sarcelle">
+    <svg class="logo" aria-hidden="true" focusable="false"><use href="#logo-mo"/></svg>
+    <p class="pied-nom">Mains Ouvertes</p>
+    <p class="pied-desc">Aide directe aux personnes en situation d'itinérance · Québec</p>
+    <p class="pied-liens">
+      <a href="https://instagram.com/mains_ouvertes" target="_blank" rel="noopener noreferrer">@mains_ouvertes</a>
+      <a href="mailto:mains.ouvertes.qc@gmail.com">mains.ouvertes.qc@gmail.com</a>
+    </p>
+    <p class="pied-fin">Bilan financier publié le premier de chaque mois.</p>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =====================================================================
+     CONFIGURATION — BILAN MENSUEL
+     Les seules valeurs à modifier chaque mois. Rien d'autre à toucher.
+     ===================================================================== */
+  var BILAN = {
+    mois:      "Mars 2026",
+    recu:      1240,   // dollars reçus
+    depense:   1185,   // dollars dépensés
+    personnes: 96      // personnes rejointes
+  };
+
+  /* --------------------------------------------------------- Barème d'impact
+     Ne jamais gonfler ces chiffres. Coûts réels d'achat en gros.
+     Vérification : 25 $ = 12 repas, 6 kits, 8 vêtements, 5 sacs, 8 déplacements. */
+  var BAREME = [
+    { emoji:"🍽️", cout:2, sing:"repas",                                             plur:"repas",                                                  court:"repas" },
+    { emoji:"🧼", cout:4, sing:"kit d'hygiène",                                     plur:"kits d'hygiène",                                         court:"kit d'hygiène" },
+    { emoji:"🧤", cout:3, sing:"article de vêtement (tuque, gants ou casquette)",   plur:"articles de vêtements (tuques, gants ou casquettes)",    court:"article de vêtement" },
+    { emoji:"🎒", cout:5, sing:"sac",                                               plur:"sacs",                                                   court:"sac" },
+    { emoji:"🚌", cout:3, sing:"déplacement",                                       plur:"déplacements",                                           court:"déplacement" }
+  ];
+
+  var MAX = 100000;
+
+  var $  = function(s,c){ return (c||document).querySelector(s); };
+  var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
+
+  var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ------------------------------------------------------------- Formatage */
+  function argent(n){
+    var dec = (Math.round(n*100) % 100 === 0) ? 0 : 2;
+    try{
+      return new Intl.NumberFormat("fr-CA",{
+        minimumFractionDigits:dec, maximumFractionDigits:dec
+      }).format(n) + " $";
+    }catch(e){
+      return (dec ? n.toFixed(2).replace(".",",") : String(n)) + " $";
+    }
+  }
+  function nombre(n){
+    try{ return new Intl.NumberFormat("fr-CA").format(n); }
+    catch(e){ return String(n); }
+  }
+
+  /* ---------------------------------------------------------------- Toast */
+  var elToast = $("#toast"), minuterieToast;
+  function toast(msg){
+    elToast.textContent = msg;
+    elToast.classList.add("visible");
+    clearTimeout(minuterieToast);
+    minuterieToast = setTimeout(function(){
+      elToast.classList.remove("visible");
+    }, 1600);
+  }
+
+  /* ------------------------------------------------------- Presse-papier
+     Le repli execCommand est indispensable : plusieurs navigateurs mobiles
+     bloquent navigator.clipboard hors contexte sécurisé. */
+  function ecrire(txt){
+    if (navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(txt);
+    }
+    return new Promise(function(res, rej){
+      var ta = document.createElement("textarea");
+      ta.value = txt;
+      ta.setAttribute("readonly","");
+      ta.style.cssText = "position:absolute;left:-9999px;top:0;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      var ok = false;
+      try{ ok = document.execCommand("copy"); }catch(e){ ok = false; }
+      document.body.removeChild(ta);
+      ok ? res() : rej(new Error("copie refusée"));
+    });
+  }
+
+  function copier(txt, btn){
+    var libelle = btn.dataset.libelle || btn.textContent;
+    if (!btn.dataset.libelle) btn.dataset.libelle = libelle;
+
+    ecrire(txt).then(function(){
+      btn.textContent = "Copié";
+      btn.classList.add("fait");
+      toast("Copié dans le presse-papier");
+      setTimeout(function(){
+        btn.textContent = btn.dataset.libelle;
+        btn.classList.remove("fait");
+      }, 1800);
+    }).catch(function(){
+      btn.textContent = "Copie impossible";
+      toast("Copie impossible — sélectionne le texte à la main");
+      setTimeout(function(){ btn.textContent = btn.dataset.libelle; }, 2200);
+    });
+  }
+
+  /* ------------------------------------------- Montant courant (saisie > bouton) */
+  var champMontant = $("#champ-montant");
+
+  function lireMontant(){
+    var brut = champMontant.value.trim().replace(/\s/g,"").replace(",",".");
+    if (!brut) return null;
+    var n = parseFloat(brut);
+    if (!isFinite(n)) return null;
+    return n;
+  }
+
+  function montantChoisi(){
+    var n = lireMontant();
+    if (n !== null && n > 0 && n <= MAX) return n;
+    var actif = $('.montant[aria-pressed="true"]');
+    return actif ? parseFloat(actif.dataset.montant) : null;
+  }
+
+  /* --------------------------------------------------------- Copier tout */
+  function copierTout(btn){
+    var m = montantChoisi();
+    var lignes = [
+      "Don Mains Ouvertes — virement Interac",
+      "",
+      "Courriel : mains.ouvertes.qc@gmail.com",
+      "Réponse à la question secrète : MOQdonation",
+      "Message à inscrire : Don Mains Ouvertes"
+    ];
+    if (m !== null) lignes.push("Montant : " + argent(m));
+    lignes.push("Instagram : @mains_ouvertes");
+    copier(lignes.join("\n"), btn);
+  }
+
+  /* ------------------------------------------------------ Boutons montants */
+  var noteMontant = $("#note-montant");
+  var NOTE_DEFAUT = "Même 5 $ paie deux repas chauds. Tous les montants comptent.";
+
+  function choisir(el){
+    $$(".montant").forEach(function(b){
+      b.setAttribute("aria-pressed", String(b === el));
+    });
+    var val = parseFloat(el.dataset.montant);
+    champMontant.value = String(val);
+    calculer();
+  }
+
+  function majNote(m){
+    if (m === null || m <= 0){ noteMontant.textContent = NOTE_DEFAUT; return; }
+    var repas = Math.floor(m / 2);
+    noteMontant.innerHTML = repas >= 1
+      ? "Ton don de <strong>" + argent(m) + "</strong> paie déjà " + nombre(repas) +
+        " repas chaud" + (repas > 1 ? "s" : "") + "."
+      : "Chaque dollar compte — même sous le prix d'un repas, ça s'additionne.";
+  }
+
+  /* ------------------------------------------------------ Calculateur */
+  var elResultats = $("#resultats"),
+      elTitre     = $("#resultats-titre"),
+      elLignes    = $("#lignes"),
+      elErreur    = $("#erreur-montant"),
+      elDirect    = $("#annonce");
+
+  function erreur(msg){
+    elErreur.textContent = msg;
+    elErreur.classList.toggle("visible", !!msg);
+    champMontant.setAttribute("aria-invalid", msg ? "true" : "false");
+  }
+
+  function calculer(){
+    var brut = champMontant.value.trim();
+
+    if (!brut){
+      erreur("");
+      elResultats.classList.remove("visible");
+      majNote(null);
+      annoncer("");
+      return;
+    }
+
+    var m = lireMontant();
+
+    if (m === null){
+      erreur("Entre un montant en chiffres, par exemple 25.");
+      elResultats.classList.remove("visible");
+      annoncer("");
+      return;
+    }
+    if (m < 0){
+      erreur("Le montant ne peut pas être négatif.");
+      elResultats.classList.remove("visible");
+      annoncer("");
+      return;
+    }
+    if (m === 0){
+      erreur("");
+      elResultats.classList.remove("visible");
+      majNote(null);
+      annoncer("");
+      return;
+    }
+    if (m > MAX){
+      erreur("Montant trop élevé. Écris-nous sur Instagram pour un don de cette taille.");
+      elResultats.classList.remove("visible");
+      annoncer("");
+      return;
+    }
+
+    erreur("");
+    // On travaille en cents pour éviter les erreurs de virgule flottante.
+    var cents = Math.round(m * 100);
+
+    elTitre.innerHTML = "<span>" + argent(m) + "</span> pourrait fournir :";
+    elLignes.innerHTML = "";
+
+    BAREME.forEach(function(item, i){
+      var n  = Math.floor(cents / (item.cout * 100));
+      var li = document.createElement("div");
+      li.className = "ligne" + (n < 1 ? " insuffisant" : "");
+      if (!reduit) li.style.animationDelay = (i * 45) + "ms";
+
+      var txt = n < 1
+        ? "moins d'un " + item.court + " <small>(" + argent(item.cout) + ")</small>"
+        : (n > 1 ? item.plur : item.sing);
+
+      li.innerHTML =
+        '<span class="ligne-emoji" aria-hidden="true">' + item.emoji + '</span>' +
+        '<span class="ligne-nb">' + (n < 1 ? "—" : nombre(n)) + '</span>' +
+        '<span class="ligne-txt">' + txt + '</span>';
+      elLignes.appendChild(li);
+    });
+
+    elResultats.classList.add("visible");
+    majNote(m);
+    annoncerDiffere(m, cents);
+  }
+
+  /* Annonce lecteur d'écran, différée pour ne pas bavarder à chaque frappe. */
+  var minuterieAnnonce;
+  function annoncer(txt){
+    clearTimeout(minuterieAnnonce);
+    if (elDirect) elDirect.textContent = txt;
+  }
+  function annoncerDiffere(m, cents){
+    clearTimeout(minuterieAnnonce);
+    minuterieAnnonce = setTimeout(function(){
+      var bouts = BAREME.map(function(item){
+        var n = Math.floor(cents / (item.cout * 100));
+        return n < 1
+          ? "moins d'un " + item.court
+          : nombre(n) + " " + (n > 1 ? item.plur : item.sing);
+      });
+      if (elDirect){
+        elDirect.textContent = argent(m) + " pourrait fournir : " + bouts.join(", ") +
+          ". Chaque ligne montre une seule catégorie à la fois.";
+      }
+    }, 700);
+  }
+
+  /* --------------------------------------------------------- Accordéons FAQ */
+  function basculer(btn){
+    var ouvert = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", String(!ouvert));
+    btn.closest(".faq-item").classList.toggle("ouvert", !ouvert);
+  }
+
+  /* ------------------------------------------------------------- Partage */
+  function partager(btn){
+    var url  = location.href;
+    var data = {
+      title: "Mains Ouvertes",
+      text:  "Aide directe aux personnes en situation d'itinérance au Québec.",
+      url:   url
+    };
+    if (navigator.share){
+      navigator.share(data).catch(function(){ /* annulé par l'usager */ });
+      return;
+    }
+    ecrire(url).then(function(){
+      btn.classList.add("fait");
+      toast("Lien copié");
+      setTimeout(function(){ btn.classList.remove("fait"); }, 1800);
+    }).catch(function(){
+      toast("Copie impossible — copie l'adresse à la main");
+    });
+  }
+
+  /* ============================ Écouteurs (aucun onclick en ligne) ========= */
+  document.addEventListener("click", function(ev){
+    var b;
+
+    if ((b = ev.target.closest("[data-copier]"))){
+      copier($(b.dataset.copier).textContent.trim(), b); return;
+    }
+    if ((b = ev.target.closest("#btn-tout"))){      copierTout(b); return; }
+    if ((b = ev.target.closest(".montant"))){       choisir(b);    return; }
+    if ((b = ev.target.closest(".faq-q"))){         basculer(b);   return; }
+    if ((b = ev.target.closest("#btn-partage"))){   partager(b);   return; }
+  });
+
+  champMontant.addEventListener("input", function(){
+    // Une saisie manuelle désélectionne les boutons qui ne correspondent plus.
+    var v = lireMontant();
+    $$(".montant").forEach(function(b){
+      b.setAttribute("aria-pressed", String(v !== null && parseFloat(b.dataset.montant) === v));
+    });
+    calculer();
+  });
+
+  /* ------------------------------------------------- Bilan mensuel injecté */
+  $("#bilan-mois").textContent   = BILAN.mois;
+  $("#bilan-recu").textContent   = argent(BILAN.recu);
+  $("#bilan-depense").textContent= argent(BILAN.depense);
+  $("#bilan-personnes").textContent = nombre(BILAN.personnes);
+
+  /* ------------------------------------- Animations d'entrée au défilement */
+  function remplirBarres(){
+    $$(".barre").forEach(function(b){ b.style.width = b.dataset.pct + "%"; });
+  }
+
+  if (reduit || !("IntersectionObserver" in window)){
+    remplirBarres();
+    $$(".reveler").forEach(function(e){ e.classList.add("vu"); });
+  } else {
+    var obs = new IntersectionObserver(function(entrees){
+      entrees.forEach(function(e){
+        if (!e.isIntersecting) return;
+        e.target.classList.add("vu");
+        if (e.target.id === "repartition") remplirBarres();
+        obs.unobserve(e.target);
+      });
+    }, { threshold:.18, rootMargin:"0px 0px -40px 0px" });
+
+    $$(".reveler").forEach(function(e){ obs.observe(e); });
+    obs.observe($("#repartition"));
+
+    // Filet de sécurité : rien ne doit rester invisible par accident.
+    setTimeout(function(){
+      $$(".reveler:not(.vu)").forEach(function(e){ e.classList.add("vu"); });
+      remplirBarres();
+    }, 3000);
+  }
+})();
+</script>
+
+</body>
+</html>
